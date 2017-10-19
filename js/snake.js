@@ -61,9 +61,25 @@ class Game {
 
     // Add a food somewhere in the game (randomly)
     addFood() {
-        var x = Math.round(Math.random() * 60);
-        var y = Math.round(Math.random() * 60);
-        this.food = [x, y];
+        var x = Math.round(10 * 60);
+        var y = Math.round(10 * 60);
+        
+        var ok = true;
+        
+        for(var i = 0; i < this.snake.length; i++) {
+            var xy = this.snake[i];
+            
+            if(xy[0] == x && xy[1] == y){
+                ok = false;
+                break;
+            }
+        }
+        
+        if(ok){
+            this.food = [x, y];
+        } else {
+            addFood();
+        }
     }
 
     // Update the game state with the next move
@@ -110,8 +126,6 @@ class Game {
         if(newHead[0] == this.food[0] && newHead[1] == this.food[1]) {
             console.log("Yum yum !!!");
             console.log("score", this.snake.length);
-            //TODO: Move food to another place
-            //This place must not be somewhere on the snake
             this.addFood();
         } else {
             this.snake.pop(); //Don't grow the snake
